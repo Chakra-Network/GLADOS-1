@@ -1,10 +1,17 @@
-# GLADOS-1
+<div align="center">
+<p align="center">
+  <h1>GLADOS-1</h1>
+</p>
+</div>
 
-The first computer-use (CUA) model post-trained using the [Pango dataset](https://huggingface.co/datasets/chakra-labs/pango), a corpus of crowd-sourced trajectories.
+<img width="1500" height="675" alt="glados-1" src="https://github.com/user-attachments/assets/b661d0c9-34d7-40f7-82e7-90cf04c24870" />
+
+
+**GLADOS-1** is the first computer-use (CUA) model post-trained using collective, crowd-sourced trajectories via the [PANGO dataset](https://huggingface.co/datasets/chakra-labs/pango-sample).
 
 ## Overview
 
-This project provides a framework for training vision-language models on GUI interaction data. The Pango dataset contains real user interactions with web interfaces, converted into training conversations for multimodal models.
+Heavily inspired by the [Qwen-2VL-Finetune repository](https://github.com/2U1/Qwen2-VL-Finetune), this project provides a framework for training vision-language models on GUI interaction data. The Pango dataset contains real user interactions with web interfaces, converted into training conversations for multimodal models.
 
 ## Dataset Structure
 
@@ -49,7 +56,7 @@ Converters transform raw Pango data into training conversations. Each converter 
 - **Output**: Action prediction
 - **Use Case**: Reverse engineering user interactions
 
-### 3. MultiturnConverter (WIP)
+### 3. MultiTurnConverter (Beta)
 
 - **Input**: Conversational history containing screenshots and actions
 - **Output**: Action prediction
@@ -79,7 +86,7 @@ make train_state_transition
 
 ### Storage Requirements
 
-During setup, the script `image_downloader` script will download all images to the `STORAGE_DIR` directory. The estimated storage requirements for the `pango-sample` dataset is 15 GB, and 265 GB for the `pango` dataset. Note, the image downloader script has a hardcoded buffer of 50GB, adjust and rebuild if this is an issue.
+During setup, the script `image_downloader` script will download all images to the `STORAGE_DIR` directory. The estimated storage requirements for the `pango-sample` dataset is 15 GB, and 265 GB for the `pango` full dataset. Note, the image downloader script has a hardcoded buffer of 50GB, adjust and rebuild if this is an issue.
 
 ## Extending Converters
 
@@ -157,4 +164,16 @@ code/
 └── consts.py           # Constants
 └── exceptions.py       # Custom exceptions
 └── tests/              # Test files
+```
+
+
+## Citation
+
+```tex
+@misc{chakralabs2025glados-1,
+  author = {Chakra Labs},
+  title = {GLADOS-1},
+  url = {https://github.com/Chakra-Network/GLADOS-1},
+  year = {2025}
+}
 ```
