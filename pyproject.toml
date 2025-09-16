@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "code"
+version = "0.1.0"
+description = "SFT using the pango dataset"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["code"]
+
+[tool.setuptools.package-dir]
+code = "code"
+
+[tool.uv.workspace]
+members = [
+    ".",
+    ".",
+]
+
+[tool.uv.sources]
+code = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "code",
+    "pytest>=8.4.2",
+]
