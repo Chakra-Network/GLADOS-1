@@ -349,12 +349,9 @@ def train(
     # Enable memory optimizations
     os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
-    # check_cuda()
+    check_cuda()
     processor, model, _ = load_checkpoint(input_model, config_url=config_url)
     total_sample_size = training_sample_size + validation_sample_size
-    train_pct = float(training_sample_size) / float(
-        training_sample_size + validation_sample_size
-    )
     dataset_path = (
         "chakra-labs/pango-sample" if is_pango_sample else "chakra-labs/pango"
     )
