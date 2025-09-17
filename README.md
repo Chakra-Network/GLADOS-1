@@ -6,17 +6,26 @@
 
 
 <img width="1500" height="675" alt="glados-1" src="https://github.com/user-attachments/assets/135265ee-1fa8-4f88-9a6d-1d8cbdc9f5f9" />
-
+<div align="center">
+<p>
+        📕 <a href="TBD">Release Blog FIX LINK!</a>&nbsp&nbsp | 🤗 <a href="https://huggingface.co/chakra-labs/GLADOS-1">Hugging Face Model</a>&nbsp&nbsp 
+        | &nbsp&nbsp 🔧 <a href="https://github.com/bytedance/UI-TARS/blob/main/README_deploy.md">Deployment (via UI-TARS)</a> &nbsp&nbsp  | &nbsp&nbsp
+🖥️ <a href="https://github.com/bytedance/UI-TARS-desktop">Running on your own computer (via UI-TARS Desktop)</a>&nbsp&nbsp
+</p>
+</div>
 
 **GLADOS-1** is the first computer-use (CUA) model post-trained using collective, crowd-sourced trajectories via the [PANGO dataset](https://huggingface.co/datasets/chakra-labs/pango-sample).
 
+
 ## Overview
 
-Heavily inspired by the [Qwen-2VL-Finetune repository](https://github.com/2U1/Qwen2-VL-Finetune), this project provides a framework for training vision-language models on GUI interaction data. The Pango dataset contains real user interactions with web interfaces, converted into training conversations for multimodal models.
+Heavily inspired by the [Qwen-2VL-Finetune repository](https://github.com/2U1/Qwen2-VL-Finetune), this project provides a framework for training vision-language models on GUI interaction data. While this code represents sample code for post-training [UI-TARS-7B-SFT](https://huggingface.co/ByteDance-Seed/UI-TARS-7B-SFT) via ByteDance Seed, it can be trivially updated for any model based on the Qwen2-VL architecture. 
+
+The [PANGO](https://huggingface.co/datasets/chakra-labs/pango) (**P**roductivity **A**pplications with **N**atural **G**UI **O**bservations and trajectories) dataset contains real user interactions with web interfaces, converted into training conversations for multimodal models.
 
 ## Dataset Structure
 
-The Pango dataset consists of user interaction sessions with screenshots and action sequences. Each session contains:
+Each session in the PANGO dataset contains:
 
 - **Screenshots**: GUI state images at different timestamps
 - **Actions**: User interactions (clicks, drags, typing, etc.)
