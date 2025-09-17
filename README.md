@@ -4,7 +4,8 @@
 </p>
 </div>
 
-<img width="1500" height="675" alt="glados-1" src="https://github.com/user-attachments/assets/b661d0c9-34d7-40f7-82e7-90cf04c24870" />
+
+<img width="1500" height="675" alt="glados-1" src="https://github.com/user-attachments/assets/135265ee-1fa8-4f88-9a6d-1d8cbdc9f5f9" />
 
 
 **GLADOS-1** is the first computer-use (CUA) model post-trained using collective, crowd-sourced trajectories via the [PANGO dataset](https://huggingface.co/datasets/chakra-labs/pango-sample).
