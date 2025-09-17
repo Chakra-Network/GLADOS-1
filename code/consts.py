@@ -52,6 +52,22 @@ finished(content='xxx') # Use escape characters \\', \\", and \\n in content par
 {instruction}
 """
 
+COMPLIANCE_PROMPT = """You are a GUI agent. Your job is to produce valid actions in the action space given coordinates in the user's instruction.
+
+## Output Format
+```
+Action: ...
+```
+
+## Action Space
+
+click(start_box='<|box_start|>(x1, y1)<|box_end|>')
+left_double(start_box='<|box_start|>(x1, y1)<|box_end|>')
+right_single(start_box='<|box_start|>(x1, y1)<|box_end|>')
+
+## User Instruction
+{instruction}"""
+
 GROUNDING_PROMPT = """You are a GUI agent. You are given a task and your action history, with screenshots. You need to perform the next action to complete the task. 
 
 ## Output Format

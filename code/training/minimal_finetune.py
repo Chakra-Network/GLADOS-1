@@ -16,8 +16,10 @@ from ..consts import (
 )
 from ..converters.simple_grounding_converter import SimpleGroundingConverter
 from ..converters.state_transition_converter import StateTransitionConverter
+from ..datasets.compliance import ComplianceSampleDataset
 from ..datasets.grounding import GroundingSampleDataset
 from ..datasets.grounding import convert_grounding_index_to_training_message
+from ..datasets.compliance import convert_compliance_index_to_training_message
 from ..datasets.state_transition import StateTransitionSampleDataset
 from ..datasets.state_transition import (
     convert_state_transition_index_to_training_message,
@@ -59,7 +61,7 @@ MAX_DISTANCE_POSSIBLE = math.sqrt(2_000_000)
 def finetune(
     processor,
     model: PreTrainedModel,
-    converter: SimpleGroundingConverter | StateTransitionConverter,
+    converter: SimpleGroundingConverter | StateTransitionConverter | None,
     training_indices: list[int],
     validation_indices: list[int],
     dataset_type: str = "grounding",
@@ -96,6 +98,8 @@ def finetune(
         convert_fn = convert_grounding_index_to_training_message
     elif dataset_type == "state_transition":
         convert_fn = convert_state_transition_index_to_training_message
+    elif dataset_type == "compliance":
+        convert_fn = convert_compliance_index_to_training_message
     else:
         raise ValueError(f"Unknown dataset type: {dataset_type}")
 
@@ -121,6 +125,8 @@ def finetune(
         train_dataset = StateTransitionSampleDataset(
             training_indices, converter, processor
         )
+    elif dataset_type == "compliance":
+        train_dataset = ComplianceSampleDataset(len(training_indices), processor)
     else:
         raise ValueError(f"Unknown dataset type: {dataset_type}")
 
@@ -343,7 +349,7 @@ def train(
     # Enable memory optimizations
     os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
-    check_cuda()
+    # check_cuda()
     processor, model, _ = load_checkpoint(input_model, config_url=config_url)
     total_sample_size = training_sample_size + validation_sample_size
     train_pct = float(training_sample_size) / float(
@@ -368,11 +374,12 @@ def train(
             min_pixels=MIN_PIXELS,
             max_pixels=MAX_PIXELS,
         )
+    elif dataset_type == "compliance":
+        training_indices = list(range(training_sample_size))
+        validation_indices = list(range(training_sample_size, total_sample_size))
+        converter = None
     else:
         raise ValueError(f"Unknown dataset type: {dataset_type}")
-    training_indices, validation_indices = converter.generate_indices(
-        n=total_sample_size, pct_train=train_pct
-    )
     print(f"Training indices: {len(training_indices)}")
     print(f"Validation indices: {len(validation_indices)}")
     finetuned_model = finetune(

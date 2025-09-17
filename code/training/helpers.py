@@ -19,7 +19,7 @@ def generate_cross_validation_loss(
     processor,
     model,
     validation_indices: list[int],
-    converter: StateTransitionConverter | SimpleGroundingConverter,
+    converter: StateTransitionConverter | SimpleGroundingConverter | None,
     index_to_training_message: Callable,
 ):
     total_loss = 0
