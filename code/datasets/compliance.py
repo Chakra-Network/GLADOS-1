@@ -43,17 +43,17 @@ def _get_action_content_and_instruction(action_type):
         case "click":
             return (
                 f"click(start_box='<|box_start|>({x}, {y})<|box_end|>')",
-                f"Please click on the element at ({x}, {y})",
+                f"Please click on the element at {x}, {y}",
             )
         case "left_double":
             return (
                 f"left_double(start_box='<|box_start|>({x}, {y})<|box_end|>')",
-                f"Please double click on the element at ({x}, {y})",
+                f"Please double click on the element at {x}, {y}",
             )
         case "right_single":
             return (
                 f"right_single(start_box='<|box_start|>({x}, {y})<|box_end|>')",
-                f"Please right click on the element at ({x}, {y})",
+                f"Please right click on the element at {x}, {y}",
             )
         case _:
             raise ValueError(f"Unknown action type {action_type}")
