@@ -54,7 +54,7 @@ lr_annealing_enabled = False
 steps_per_epoch = int(training_sample_size / (batch_size * gradient_accumulation_steps))
 # Total number of steps = num_epochs * steps_per_epoch = training_sample_size. Should be equal to training_sample_size empirically
 # must be an integer
-num_epochs = 1
+num_epochs = 10
 MAX_DISTANCE_POSSIBLE = math.sqrt(2_000_000)
 
 
