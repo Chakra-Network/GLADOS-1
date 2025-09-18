@@ -33,15 +33,15 @@ from .helpers import (
     wandb_log,
 )
 
-input_model = "chakra-labs/pango-7b-sft-checkpoints"
+input_model = "chakra-labs/pango-7b-sft-checkpoints-state-transition"
 config_url = "https://huggingface.co/ByteDance-Seed/UI-TARS-7B-SFT/raw/main/config.json"
-checkpoint_model_name = "chakra-labs/pango-7b-sft-checkpoints-state-transition"
+checkpoint_model_name = "chakra-labs/pango-7b-sft-compliance"
 model_name = checkpoint_model_name[checkpoint_model_name.rfind("/") + 1 :]
 output_dir = "checkpoints/epoch_{epoch}_" + model_name
 
 
 # hyperparameters
-training_sample_size = 900
+training_sample_size = 1000
 validation_sample_size = 100
 learning_rate = 1e-5
 batch_size = 4
@@ -54,7 +54,7 @@ lr_annealing_enabled = False
 steps_per_epoch = int(training_sample_size / (batch_size * gradient_accumulation_steps))
 # Total number of steps = num_epochs * steps_per_epoch = training_sample_size. Should be equal to training_sample_size empirically
 # must be an integer
-num_epochs = int(training_sample_size / steps_per_epoch) * 5
+num_epochs = 1
 MAX_DISTANCE_POSSIBLE = math.sqrt(2_000_000)
 
 
