@@ -16,33 +16,38 @@ from ..consts import (
 )
 from ..converters.simple_grounding_converter import SimpleGroundingConverter
 from ..converters.state_transition_converter import StateTransitionConverter
-from ..datasets.compliance import ComplianceSampleDataset
-from ..datasets.grounding import GroundingSampleDataset
-from ..datasets.grounding import convert_grounding_index_to_training_message
-from ..datasets.compliance import convert_compliance_index_to_training_message
-from ..datasets.state_transition import StateTransitionSampleDataset
+from ..datasets.compliance import (
+    ComplianceSampleDataset,
+    convert_compliance_index_to_training_message,
+)
+from ..datasets.grounding import (
+    GroundingSampleDataset,
+    convert_grounding_index_to_training_message,
+)
 from ..datasets.state_transition import (
+    StateTransitionSampleDataset,
     convert_state_transition_index_to_training_message,
 )
 from ..exceptions import ActionConversionError
 from .checkpoint import check_cuda, load_checkpoint, save_checkpoint, upload_checkpoint
 from .helpers import (
-    generate_cross_validation_loss,
     collate_fn,
+    generate_cross_validation_loss,
     try_get_coordinates_for_target_and_predicted_response,
     wandb_log,
 )
 
-input_model = "chakra-labs/pango-7b-sft-checkpoints-state-transition"
+input_model = "ByteDance-Seed/UI-TARS-7B-SFT"
 config_url = "https://huggingface.co/ByteDance-Seed/UI-TARS-7B-SFT/raw/main/config.json"
-checkpoint_model_name = "chakra-labs/pango-7b-sft-compliance"
+# TODO: Edit your checkpoint name here
+checkpoint_model_name = "INSERT_YOUR_CHECKPOINT_NAME"
 model_name = checkpoint_model_name[checkpoint_model_name.rfind("/") + 1 :]
 output_dir = "checkpoints/epoch_{epoch}_" + model_name
 
 
-# hyperparameters
-training_sample_size = 1000
-validation_sample_size = 100
+# TODO: EDIT YOUR HYPERPARAMETERS HERE
+training_sample_size = 100_000
+validation_sample_size = 1000
 learning_rate = 1e-5
 batch_size = 4
 # Effective batch size = batch_size * gradient_accumulation_steps
