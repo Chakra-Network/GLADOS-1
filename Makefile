@@ -2,7 +2,6 @@ VENV_DIR = .venv
 UV = uv
 UV_PATH = $(HOME)/.local/bin/uv
 
-
 check_uv:
 	@if [ -x "$(UV_PATH)" ]; then \
 		echo ""; \
