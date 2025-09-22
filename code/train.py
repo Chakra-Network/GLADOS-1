@@ -8,7 +8,7 @@ if __name__ == "__main__":
         "--dataset_type",
         type=str,
         default="grounding",
-        choices=["grounding", "state_transition"],
+        choices=["grounding", "state_transition", "compliance"],
     )
     parser.add_argument(
         "--commit_hash",

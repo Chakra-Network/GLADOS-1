@@ -16,31 +16,38 @@ from ..consts import (
 )
 from ..converters.simple_grounding_converter import SimpleGroundingConverter
 from ..converters.state_transition_converter import StateTransitionConverter
-from ..datasets.grounding import GroundingSampleDataset
-from ..datasets.grounding import convert_grounding_index_to_training_message
-from ..datasets.state_transition import StateTransitionSampleDataset
+from ..datasets.compliance import (
+    ComplianceSampleDataset,
+    convert_compliance_index_to_training_message,
+)
+from ..datasets.grounding import (
+    GroundingSampleDataset,
+    convert_grounding_index_to_training_message,
+)
 from ..datasets.state_transition import (
+    StateTransitionSampleDataset,
     convert_state_transition_index_to_training_message,
 )
 from ..exceptions import ActionConversionError
 from .checkpoint import check_cuda, load_checkpoint, save_checkpoint, upload_checkpoint
 from .helpers import (
-    generate_cross_validation_loss,
     collate_fn,
+    generate_cross_validation_loss,
     try_get_coordinates_for_target_and_predicted_response,
     wandb_log,
 )
 
-input_model = "chakra-labs/pango-7b-sft-checkpoints"
+input_model = "ByteDance-Seed/UI-TARS-7B-SFT"
 config_url = "https://huggingface.co/ByteDance-Seed/UI-TARS-7B-SFT/raw/main/config.json"
-checkpoint_model_name = "chakra-labs/pango-7b-sft-checkpoints-state-transition"
+# TODO: Edit your checkpoint name here
+checkpoint_model_name = "INSERT_YOUR_CHECKPOINT_NAME"
 model_name = checkpoint_model_name[checkpoint_model_name.rfind("/") + 1 :]
 output_dir = "checkpoints/epoch_{epoch}_" + model_name
 
 
-# hyperparameters
-training_sample_size = 900
-validation_sample_size = 100
+# TODO: EDIT YOUR HYPERPARAMETERS HERE
+training_sample_size = 100_000
+validation_sample_size = 1000
 learning_rate = 1e-5
 batch_size = 4
 # Effective batch size = batch_size * gradient_accumulation_steps
@@ -52,14 +59,14 @@ lr_annealing_enabled = False
 steps_per_epoch = int(training_sample_size / (batch_size * gradient_accumulation_steps))
 # Total number of steps = num_epochs * steps_per_epoch = training_sample_size. Should be equal to training_sample_size empirically
 # must be an integer
-num_epochs = int(training_sample_size / steps_per_epoch) * 5
+num_epochs = 10
 MAX_DISTANCE_POSSIBLE = math.sqrt(2_000_000)
 
 
 def finetune(
     processor,
     model: PreTrainedModel,
-    converter: SimpleGroundingConverter | StateTransitionConverter,
+    converter: SimpleGroundingConverter | StateTransitionConverter | None,
     training_indices: list[int],
     validation_indices: list[int],
     dataset_type: str = "grounding",
@@ -96,6 +103,8 @@ def finetune(
         convert_fn = convert_grounding_index_to_training_message
     elif dataset_type == "state_transition":
         convert_fn = convert_state_transition_index_to_training_message
+    elif dataset_type == "compliance":
+        convert_fn = convert_compliance_index_to_training_message
     else:
         raise ValueError(f"Unknown dataset type: {dataset_type}")
 
@@ -121,6 +130,8 @@ def finetune(
         train_dataset = StateTransitionSampleDataset(
             training_indices, converter, processor
         )
+    elif dataset_type == "compliance":
+        train_dataset = ComplianceSampleDataset(len(training_indices), processor)
     else:
         raise ValueError(f"Unknown dataset type: {dataset_type}")
 
@@ -346,9 +357,6 @@ def train(
     check_cuda()
     processor, model, _ = load_checkpoint(input_model, config_url=config_url)
     total_sample_size = training_sample_size + validation_sample_size
-    train_pct = float(training_sample_size) / float(
-        training_sample_size + validation_sample_size
-    )
     dataset_path = (
         "chakra-labs/pango-sample" if is_pango_sample else "chakra-labs/pango"
     )
@@ -368,11 +376,12 @@ def train(
             min_pixels=MIN_PIXELS,
             max_pixels=MAX_PIXELS,
         )
+    elif dataset_type == "compliance":
+        training_indices = list(range(training_sample_size))
+        validation_indices = list(range(training_sample_size, total_sample_size))
+        converter = None
     else:
         raise ValueError(f"Unknown dataset type: {dataset_type}")
-    training_indices, validation_indices = converter.generate_indices(
-        n=total_sample_size, pct_train=train_pct
-    )
     print(f"Training indices: {len(training_indices)}")
     print(f"Validation indices: {len(validation_indices)}")
     finetuned_model = finetune(

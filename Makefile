@@ -39,6 +39,12 @@ train_state_transition: check_uv
 	echo "Using commit hash: $$COMMIT_HASH"; \
 	$(UV) run python -m code.train --dataset_type state_transition --commit_hash $$COMMIT_HASH
 
+train_compliance: check_uv
+	@echo "Fine-tuning the model with compliance dataset..."
+	@COMMIT_HASH=$$(git rev-parse --short HEAD); \
+	echo "Using commit hash: $$COMMIT_HASH"; \
+	$(UV) run python -m code.train --dataset_type compliance --commit_hash $$COMMIT_HASH
+
 test_sample: check_uv
 	@echo "Running tests..."
 	@$(UV) pip install -e .
