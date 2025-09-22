@@ -8,7 +8,7 @@
 <img width="1500" height="675" alt="glados-1" src="https://github.com/user-attachments/assets/135265ee-1fa8-4f88-9a6d-1d8cbdc9f5f9" />
 <div align="center">
 <p>
-        📕 <a href="TBD">Release Blog FIX LINK!</a>&nbsp&nbsp | 🤗 <a href="https://huggingface.co/chakra-labs/GLADOS-1">Hugging Face Model</a>&nbsp&nbsp 
+        📕 <a href="TBD">Release Blog FIX LINK!</a>&nbsp&nbsp | &nbsp&nbsp 🤗 <a href="https://huggingface.co/chakra-labs/GLADOS-1">Hugging Face Model</a>&nbsp&nbsp 
         | &nbsp&nbsp 🔧 <a href="https://github.com/bytedance/UI-TARS/blob/main/README_deploy.md">Deployment (via UI-TARS)</a> &nbsp&nbsp  | &nbsp&nbsp
 🖥️ <a href="https://github.com/bytedance/UI-TARS-desktop">Running on your own computer (via UI-TARS Desktop)</a>&nbsp&nbsp
 </p>
